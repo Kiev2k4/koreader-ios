@@ -13,7 +13,9 @@ jobs:
           submodules: recursive
 
       - name: Install build dependencies
-        run: brew install cmake automake autoconf libtool pkg-config nasm luajit
+        run: |
+          brew install make cmake automake autoconf libtool pkg-config nasm luajit meson ninja
+          echo "/opt/homebrew/opt/make/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Build host LuaJIT and iOS Xcode project
         run: |
@@ -26,6 +28,7 @@ jobs:
             -scheme KOReader \
             -sdk iphoneos \
             -configuration Release \
+            ENABLE_USER_SCRIPT_SANDBOXING=NO \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
