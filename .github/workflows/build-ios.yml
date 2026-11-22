@@ -6,15 +6,19 @@ on:
 jobs:
   build:
     runs-on: macos-latest
+    env:
+      HOMEBREW_NO_AUTO_UPDATE: "1"
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           submodules: recursive
+          fetch-depth: 0
 
       - name: Install build dependencies
         run: |
-          brew install make cmake automake autoconf libtool pkg-config nasm luajit meson ninja
+          brew install make coreutils cmake automake autoconf libtool pkg-config nasm luajit meson ninja
+          echo "/opt/homebrew/opt/coreutils/libexec/gnubin" >> $GITHUB_PATH
           echo "/opt/homebrew/opt/make/libexec/gnubin" >> $GITHUB_PATH
 
       - name: Build host LuaJIT and iOS Xcode project
